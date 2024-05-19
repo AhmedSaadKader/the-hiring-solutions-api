@@ -12,5 +12,15 @@
     "database": "hiring_solutions_test",
     "user": "postgres",
     "password": "ahmed89saad"
+  },
+  "production": {
+    "driver": "pg",
+    "host": "ths-1.cry4s00wodtn.eu-north-1.rds.amazonaws.com",
+    "database": "hiring_solutions_prod",
+    "user": "postgres",
+    "password": "hiringsolutions",
+    "ssl": {
+      "rejectUnauthorized": false
+    }
   }
 }

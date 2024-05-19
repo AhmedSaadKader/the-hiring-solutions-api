@@ -9,7 +9,7 @@
     "start": "nodemon src/index.ts",
     "build": "npx tsc",
     "watch": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "createdb": "db-migrate db:create hiring_solutions_dev",
+    "createdb": "db-migrate db:create hiring_solutions_prod",
     "migrate": "db-migrate up",
     "lint": "eslint src/*_/_.ts",
     "prettier": "prettier --config .prettierrc --write src/**/*.ts"
