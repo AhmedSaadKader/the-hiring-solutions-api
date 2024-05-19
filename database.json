@@ -1,0 +1,16 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "hiring_solutions_dev",
+    "user": "postgres",
+    "password": "ahmed89saad"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "hiring_solutions_test",
+    "user": "postgres",
+    "password": "ahmed89saad"
+  }
+}
