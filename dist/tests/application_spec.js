@@ -135,8 +135,8 @@ describe('Application Model', () => {
     });
     afterAll(async () => {
         await job.delete(new_job.id);
-        await company.delete(new_company.id);
-        await recruiter.delete(new_recruiter.id);
-        await candidate.delete(new_candidate.id);
+        await company.deleteCompany(new_company.id);
+        await recruiter.deleteRecruiter(new_recruiter.id);
+        await candidate.deleteCandidate(new_candidate.id);
     });
 });

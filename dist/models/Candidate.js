@@ -2,30 +2,49 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CandidateModel = void 0;
 const Base_model_1 = require("./Base_model");
+const passwordHandler_1 = require("./helpers/passwordHandler");
+const sql_query_1 = require("./helpers/sql_query");
 class CandidateModel extends Base_model_1.BaseModel {
     constructor() {
         super(...arguments);
         this.tableName = 'candidates';
     }
-    async index() {
+    async indexCandidate() {
         return super.index(this.tableName);
     }
-    async show(id) {
+    async showCandidate(id) {
         return super.show(id, this.tableName);
     }
     async create(candidate) {
-        return super.create(candidate, this.tableName);
+        const { name, email, password, resume, experience } = candidate;
+        try {
+            const sql = 'INSERT INTO candidates (name, email, password_digest, resume, experience) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+            const password_digest = (0, passwordHandler_1.hashPassword)(password);
+            const result = await (0, sql_query_1.connectionSQLResult)(sql, [
+                name,
+                email,
+                password_digest,
+                resume,
+                experience
+            ]);
+            return result.rows[0];
+        }
+        catch (err) {
+            throw new Error(`Could not create candidate ${name}. Error: ${err}`);
+        }
     }
-    async authenticate(email, password) {
+    async authenticateCandidate(email, password) {
         return super.authenticate(email, password, this.tableName);
     }
-    async delete(id) {
+    async deleteCandidate(id) {
         return super.delete(id, this.tableName);
     }
-    async update(id, name, email, password, resume, experience) {
+    async update(candidate) {
+        const { id, recruiter_id, name, email, password, resume, experience } = candidate;
         try {
-            const sql = 'UPDATE candidates SET name=($1), email=($2), password=($3), resume=($4), experience=($5) WHERE id=($6) RETURNING *';
+            const sql = 'UPDATE candidates SET recruiter_id=($1), name=($2), email=($3), password_digest=($4), resume=($5), experience=($6) WHERE id=($7) RETURNING *';
             const result = await (0, sql_query_1.connectionSQLResult)(sql, [
+                recruiter_id,
                 name,
                 email,
                 password,

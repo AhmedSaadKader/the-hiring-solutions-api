@@ -10,7 +10,7 @@ export const getAllCompanies = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const allCompanies = await company.index();
+    const allCompanies = await company.indexCompany();
     res.json(allCompanies);
   } catch (error) {
     next(error);
@@ -23,7 +23,7 @@ export const getCompany = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await company.show(parseInt(req.params.id));
+    const result = await company.showCompany(parseInt(req.params.id));
     res.json(result);
   } catch (error) {
     next(error);
@@ -50,7 +50,7 @@ export const deleteCompany = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await company.delete(parseInt(req.params.id));
+    const result = await company.deleteCompany(parseInt(req.params.id));
     res.json(result);
   } catch (error) {
     next(error);
@@ -63,20 +63,16 @@ export const updateCompany = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await company.show(parseInt(req.params.id));
-    const newName = req.body.name || result.name;
-    const industry = req.body.industry || result.industry;
-    const description = req.body.description || result.description;
-    const newEmail = req.body.email || result.email;
-    const newPassword = req.body.password || result.password;
-    const newCompany = await company.update(
-      parseInt(req.params.id),
-      newName,
-      industry,
-      description,
-      newEmail,
-      newPassword
-    );
+    const result = await company.showCompany(parseInt(req.params.id));
+    const updatedCompany: Company = {
+      ...result,
+      name: req.body.name || result.name,
+      industry: req.body.industry || result.industry,
+      description: req.body.description || result.description,
+      email: req.body.email || result.email,
+      password: req.body.password || result.password
+    };
+    const newCompany = await company.update(updatedCompany);
     res.json(newCompany);
   } catch (error) {
     next(error);

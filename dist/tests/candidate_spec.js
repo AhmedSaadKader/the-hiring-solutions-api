@@ -38,7 +38,7 @@ describe('candidate Model', () => {
         });
     });
     it('index method should return a list of candidates', async () => {
-        const result = await candidate.index();
+        const result = await candidate.indexCandidate();
         expect(result).toEqual([
             {
                 id: candidate_id,
@@ -51,7 +51,7 @@ describe('candidate Model', () => {
         ]);
     });
     it('show method should return the correct list', async () => {
-        const result = await candidate.show(candidate_id);
+        const result = await candidate.showCandidate(candidate_id);
         expect(result).toEqual({
             id: candidate_id,
             name: 'first_test_candidate',
@@ -62,7 +62,15 @@ describe('candidate Model', () => {
         });
     });
     it('update method should update specific candidate', async () => {
-        const result = await candidate.update(candidate_id, 'first_test_candidate', 'candidate@email.com', 'candidate_password', 'candidate_resume', 12);
+        const updatedCandidate = {
+            id: candidate_id,
+            name: 'first_test_candidate',
+            email: 'candidate@email.com',
+            password: 'candidate_password',
+            resume: 'candidate_resume',
+            experience: 12
+        };
+        const result = await candidate.update(updatedCandidate);
         expect(result).toEqual({
             id: candidate_id,
             name: 'first_test_candidate',
@@ -73,7 +81,7 @@ describe('candidate Model', () => {
         });
     });
     it('delete method should remove the correct candidate', async () => {
-        const result = await candidate.delete(candidate_id);
-        expect(result).toEqual(undefined);
+        const result = await candidate.deleteCandidate(candidate_id);
+        expect(result).toEqual(null);
     });
 });

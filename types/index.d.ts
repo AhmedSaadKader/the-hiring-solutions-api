@@ -2,7 +2,8 @@ import { Request } from 'express';
 
 type UserPayload = {
   id?: number;
-  username?: string;
+  email?: string;
+  role?: string;
   iat?: string | number;
 };
 

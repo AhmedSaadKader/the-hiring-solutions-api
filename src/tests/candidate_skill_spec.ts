@@ -70,7 +70,7 @@ describe('candidateSkill Model', () => {
     expect(result).toEqual(undefined);
   });
   afterAll(async () => {
-    await candidate.delete(new_candidate.id as number);
+    await candidate.deleteCandidate(new_candidate.id as number);
     await skill.delete(new_skill.id as number);
   });
 });

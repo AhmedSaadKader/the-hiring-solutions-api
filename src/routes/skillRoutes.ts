@@ -6,8 +6,11 @@ import {
   getSkill,
   updateSkill
 } from '../controllers/skillController';
+import auth from '../middleware/auth';
 
 const router = Router();
+
+router.use(auth);
 
 router.get('/', getAllSkills);
 

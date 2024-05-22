@@ -4,7 +4,7 @@ VALUES
   ('Alice Smith', 'alice@example.com', 'qwerty456'),
   ('Bob Johnson', 'bob@example.com', 'abc123');
 
-INSERT INTO companies (name, industry, description, email, password)
+INSERT INTO companies (name, industry, description, email, password_digest)
 VALUES
   ('Company A', 'Tech', 'Tech company specializing in software development', 'companyA@example.com', 'password123'),
   ('Company B', 'Finance', 'Finance company offering financial services', 'companyB@example.com', 'qwerty456'),
@@ -22,7 +22,7 @@ VALUES
   ('CSS'),
   ('Node.js');
 
-INSERT INTO candidates (name, email, password, resume, experience)
+INSERT INTO candidates (name, email, password_digest, resume, experience)
 VALUES
   ('Jane Doe', 'jane@example.com', 'password123', 'link_to_resume', 3),
   ('Michael Smith', 'michael@example.com', 'qwerty456', 'link_to_resume', 5),

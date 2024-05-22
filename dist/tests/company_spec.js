@@ -38,7 +38,7 @@ describe('Company Model', () => {
         });
     });
     it('index method should return a list of companys', async () => {
-        const result = await company.index();
+        const result = await company.indexCompany();
         expect(result).toEqual([
             {
                 id: company_id,
@@ -51,7 +51,7 @@ describe('Company Model', () => {
         ]);
     });
     it('show method should return the correct list', async () => {
-        const result = await company.show(company_id);
+        const result = await company.showCompany(company_id);
         expect(result).toEqual({
             id: company_id,
             name: 'first_test_company',
@@ -62,7 +62,15 @@ describe('Company Model', () => {
         });
     });
     it('update method should update specific company', async () => {
-        const result = await company.update(company_id, 'updated_test_company', 'first_test_industry', 'first_company_description', 'company@email.com', 'company_password');
+        const updatedCompany = {
+            id: company_id,
+            name: 'updated_test_company',
+            industry: 'first_test_industry',
+            description: 'first_company_description',
+            email: 'company@email.com',
+            password: 'company_password'
+        };
+        const result = await company.update(updatedCompany);
         expect(result).toEqual({
             id: company_id,
             name: 'updated_test_company',
@@ -73,7 +81,7 @@ describe('Company Model', () => {
         });
     });
     it('delete method should remove the correct company', async () => {
-        const result = await company.delete(company_id);
-        expect(result).toEqual(undefined);
+        const result = await company.deleteCompany(company_id);
+        expect(result).toEqual(null);
     });
 });

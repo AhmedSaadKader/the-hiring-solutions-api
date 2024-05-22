@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createRecruiter,
+  loginRecruiter,
   deleteRecruiter,
   getAllRecruiters,
   getRecruiter,
@@ -8,6 +9,8 @@ import {
 } from '../controllers/recruiterControllers';
 
 const router = Router();
+
+router.post('/login', loginRecruiter);
 
 router.get('/', getAllRecruiters);
 

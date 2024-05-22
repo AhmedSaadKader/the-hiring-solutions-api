@@ -80,7 +80,7 @@ describe('jobRequirement Model', () => {
   });
   afterAll(async () => {
     await job.delete(new_job.id as number);
-    await company.delete(new_company.id as number);
+    await company.deleteCompany(new_company.id as number);
     await skill.delete(new_skill.id as number);
   });
 });

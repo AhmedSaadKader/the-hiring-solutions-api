@@ -2,6 +2,7 @@ import { NextFunction, Response } from 'express';
 import { RequestAuth } from '../../types';
 import { Recruiter, RecruiterModel } from '../models/Recruiter';
 import jwt from 'jsonwebtoken';
+import { BaseUser } from '../models/Base_model';
 
 const recruiter = new RecruiterModel();
 
@@ -11,7 +12,7 @@ export const getAllRecruiters = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const allRecruiters = await recruiter.index();
+    const allRecruiters = await recruiter.indexRecruiter();
     res.json(allRecruiters);
   } catch (error) {
     next(error);
@@ -24,7 +25,7 @@ export const getRecruiter = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await recruiter.show(parseInt(req.params.id));
+    const result = await recruiter.showRecruiter(parseInt(req.params.id));
     res.json(result);
   } catch (error) {
     next(error);
@@ -49,13 +50,40 @@ export const createRecruiter = async (
   }
 };
 
+export const loginRecruiter = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { email, password, role } = req.body;
+  if (!email || !password || !role) {
+    throw new Error('Please provide all values');
+  }
+  try {
+    const createdRecruiter = await recruiter.authenticateRecruiter(
+      email,
+      password
+    );
+    const token = recruiter.generateJWT(createdRecruiter as BaseUser);
+    res.json({
+      token,
+      email: (createdRecruiter as BaseUser).email,
+      id: (createdRecruiter as BaseUser).id,
+      role: (createdRecruiter as BaseUser).role
+    });
+  } catch (error) {
+    res.status(400);
+    next(error);
+  }
+};
+
 export const deleteRecruiter = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await recruiter.delete(parseInt(req.params.id));
+    const result = await recruiter.deleteRecruiter(parseInt(req.params.id));
     res.json(result);
   } catch (error) {
     next(error);
@@ -68,16 +96,14 @@ export const updateRecruiter = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await recruiter.show(parseInt(req.params.id));
-    const newName = req.body.name || result.name;
-    const newEmail = req.body.email || result.email;
-    const newPassword = req.body.password || result.password_digest;
-    const newRecruiter = await recruiter.update(
-      parseInt(req.params.id),
-      newName,
-      newEmail,
-      newPassword
-    );
+    const result = await recruiter.showRecruiter(parseInt(req.params.id));
+    const updatedRecruiter: Recruiter = {
+      ...result,
+      name: req.body.name || result.name,
+      email: req.body.email || result.email,
+      password_digest: req.body.password || result.password_digest
+    };
+    const newRecruiter = await recruiter.update(updatedRecruiter);
     res.json(newRecruiter);
   } catch (error) {
     next(error);

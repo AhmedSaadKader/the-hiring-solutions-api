@@ -5,7 +5,7 @@ const Company_1 = require("../models/Company");
 const company = new Company_1.CompanyModel();
 const getAllCompanies = async (_req, res, next) => {
     try {
-        const allCompanies = await company.index();
+        const allCompanies = await company.indexCompany();
         res.json(allCompanies);
     }
     catch (error) {
@@ -15,7 +15,7 @@ const getAllCompanies = async (_req, res, next) => {
 exports.getAllCompanies = getAllCompanies;
 const getCompany = async (req, res, next) => {
     try {
-        const result = await company.show(parseInt(req.params.id));
+        const result = await company.showCompany(parseInt(req.params.id));
         res.json(result);
     }
     catch (error) {
@@ -36,7 +36,7 @@ const createCompany = async (req, res, next) => {
 exports.createCompany = createCompany;
 const deleteCompany = async (req, res, next) => {
     try {
-        const result = await company.delete(parseInt(req.params.id));
+        const result = await company.deleteCompany(parseInt(req.params.id));
         res.json(result);
     }
     catch (error) {
@@ -46,13 +46,16 @@ const deleteCompany = async (req, res, next) => {
 exports.deleteCompany = deleteCompany;
 const updateCompany = async (req, res, next) => {
     try {
-        const result = await company.show(parseInt(req.params.id));
-        const newName = req.body.name || result.name;
-        const industry = req.body.industry || result.industry;
-        const description = req.body.description || result.description;
-        const newEmail = req.body.email || result.email;
-        const newPassword = req.body.password || result.password;
-        const newCompany = await company.update(parseInt(req.params.id), newName, industry, description, newEmail, newPassword);
+        const result = await company.showCompany(parseInt(req.params.id));
+        const updatedCompany = {
+            ...result,
+            name: req.body.name || result.name,
+            industry: req.body.industry || result.industry,
+            description: req.body.description || result.description,
+            email: req.body.email || result.email,
+            password: req.body.password || result.password
+        };
+        const newCompany = await company.update(updatedCompany);
         res.json(newCompany);
     }
     catch (error) {

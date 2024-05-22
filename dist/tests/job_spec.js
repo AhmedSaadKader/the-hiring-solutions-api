@@ -106,6 +106,6 @@ describe('Job Model', () => {
         expect(result).toEqual(undefined);
     });
     afterAll(async () => {
-        await company.delete(new_company.id);
+        await company.deleteCompany(new_company.id);
     });
 });

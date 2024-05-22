@@ -34,7 +34,7 @@ describe('Recruiter Model', () => {
         });
     });
     it('index method should return a list of recruiters', async () => {
-        const result = await recruiter.index();
+        const result = await recruiter.indexRecruiter();
         expect(result).toEqual([
             {
                 id: recruiter_id,
@@ -45,7 +45,7 @@ describe('Recruiter Model', () => {
         ]);
     });
     it('show method should return the correct list', async () => {
-        const result = await recruiter.show(recruiter_id);
+        const result = await recruiter.showRecruiter(recruiter_id);
         expect(result).toEqual({
             id: recruiter_id,
             name: 'first_test_recruiter',
@@ -54,7 +54,13 @@ describe('Recruiter Model', () => {
         });
     });
     it('update method should update specific recruiter', async () => {
-        const result = await recruiter.update(recruiter_id, 'updated_test_recruiter', 'recruiter@email.com', 'recruiter_password');
+        const updatedRecruiter = {
+            id: recruiter_id,
+            name: 'updated_test_recruiter',
+            email: 'recruiter@email.com',
+            password: 'recruiter_password'
+        };
+        const result = await recruiter.update(updatedRecruiter);
         expect(result).toEqual({
             id: recruiter_id,
             name: 'updated_test_recruiter',
@@ -63,7 +69,7 @@ describe('Recruiter Model', () => {
         });
     });
     it('delete method should remove the correct recruiter', async () => {
-        const result = await recruiter.delete(recruiter_id);
-        expect(result).toEqual(undefined);
+        const result = await recruiter.deleteRecruiter(recruiter_id);
+        expect(result).toEqual(null);
     });
 });
