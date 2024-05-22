@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { RequestAuth } from '../../types';
 import { Recruiter, RecruiterModel } from '../models/Recruiter';
+import jwt from 'jsonwebtoken';
 
 const recruiter = new RecruiterModel();
 
@@ -38,7 +39,11 @@ export const createRecruiter = async (
   const recruiterData: Recruiter = req.body;
   try {
     const newRecruiter = await recruiter.create(recruiterData);
-    res.json(newRecruiter);
+    const token = jwt.sign(
+      { recruiter: newRecruiter },
+      process.env.TOKEN_SECRET as string
+    );
+    res.json(token);
   } catch (error) {
     next(error);
   }
@@ -66,7 +71,7 @@ export const updateRecruiter = async (
     const result = await recruiter.show(parseInt(req.params.id));
     const newName = req.body.name || result.name;
     const newEmail = req.body.email || result.email;
-    const newPassword = req.body.password || result.password;
+    const newPassword = req.body.password || result.password_digest;
     const newRecruiter = await recruiter.update(
       parseInt(req.params.id),
       newName,

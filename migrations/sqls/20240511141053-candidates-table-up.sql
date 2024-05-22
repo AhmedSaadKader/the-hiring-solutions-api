@@ -1,5 +1,6 @@
 CREATE TABLE "candidates" (
   "id" SERIAL PRIMARY KEY,
+  "recruiter_id" integer REFERENCES recruiters(id),
   "name" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
   "password" varchar,

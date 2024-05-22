@@ -1,4 +1,4 @@
-INSERT INTO recruiters (name, email, password)
+INSERT INTO recruiters (name, email, password_digest)
 VALUES
   ('John Doe', 'john@example.com', 'password123'),
   ('Alice Smith', 'alice@example.com', 'qwerty456'),

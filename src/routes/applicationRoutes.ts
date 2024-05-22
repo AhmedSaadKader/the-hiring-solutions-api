@@ -1,19 +1,20 @@
 import { Router } from 'express';
 import {
-  createJobRequirement,
-  deleteJobRequirement,
-  getAllJobRequirements,
-  getJobRequirement
-} from '../controllers/jobRequirementsControllers';
+  getAllApplications,
+  createApplication,
+  getApplication,
+  updateApplication,
+  deleteApplication
+} from '../controllers/applicationControllers';
 
 const router = Router();
 
-router.get('/', getAllJobRequirements);
+router.get('/', getAllApplications);
 
-router.get('/:skillId/:jobId', getJobRequirement);
+router.get('/applicationId', getApplication);
 
-router.post('/', createJobRequirement);
+router.post('/', createApplication);
 
-router.delete('/:skillId/:jobId', deleteJobRequirement);
+router.delete('/:applicationId', deleteApplication);
 
 export default router;

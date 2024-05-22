@@ -26,6 +26,13 @@ exports.getJob = getJob;
 const createJob = async (req, res, next) => {
     const JobData = req.body;
     try {
+        // try {
+        //   jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+        // } catch (err) {
+        //   res.status(401);
+        //   res.json(`Invalid token ${err}`);
+        //   return;
+        // }
         const newJob = await job.create(JobData);
         res.json(newJob);
     }

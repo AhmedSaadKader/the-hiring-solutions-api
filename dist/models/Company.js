@@ -1,54 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyModel = void 0;
-const sql_query_1 = require("./helpers/sql_query");
-class CompanyModel {
+const Base_model_1 = require("./Base_model");
+class CompanyModel extends Base_model_1.BaseModel {
+    constructor() {
+        super(...arguments);
+        this.tableName = 'companies';
+    }
     async index() {
-        try {
-            const sql = 'SELECT * FROM companies';
-            const result = await (0, sql_query_1.connectionSQLResult)(sql, []);
-            return result.rows;
-        }
-        catch (err) {
-            throw new Error(`Could not find companies. Error: ${err}`);
-        }
+        return super.index(this.tableName);
     }
     async show(id) {
-        try {
-            const sql = 'SELECT * FROM companies WHERE id=($1)';
-            const result = await (0, sql_query_1.connectionSQLResult)(sql, [id]);
-            return result.rows[0];
-        }
-        catch (err) {
-            throw new Error(`Could not find company ${id}. Error: ${err}`);
-        }
+        return super.show(id, this.tableName);
     }
     async create(company) {
-        const { name, industry, description, email, password } = company;
-        try {
-            const sql = 'INSERT INTO companies (name, industry, description, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-            const result = await (0, sql_query_1.connectionSQLResult)(sql, [
-                name,
-                industry,
-                description,
-                email,
-                password
-            ]);
-            return result.rows[0];
-        }
-        catch (err) {
-            throw new Error(`Could not create company ${name}. Error: ${err}`);
-        }
+        return super.create(company, this.tableName);
+    }
+    async authenticate(email, password) {
+        return super.authenticate(email, password, this.tableName);
     }
     async delete(id) {
-        try {
-            const sql = 'DELETE FROM companies WHERE id=($1)';
-            const result = await (0, sql_query_1.connectionSQLResult)(sql, [id]);
-            return result.rows[0];
-        }
-        catch (err) {
-            throw new Error(`Could not delete company ${id}. Error: ${err}`);
-        }
+        return super.delete(id, this.tableName);
     }
     async update(id, name, industry, description, email, password) {
         try {

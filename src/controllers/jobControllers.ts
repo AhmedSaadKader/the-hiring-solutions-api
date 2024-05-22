@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { RequestAuth } from '../../types';
 import { Job, JobModel } from '../models/Job';
+import jwt from 'jsonwebtoken';
 
 const job = new JobModel();
 
@@ -37,6 +38,13 @@ export const createJob = async (
 ): Promise<void> => {
   const JobData: Job = req.body;
   try {
+    // try {
+    //   jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    // } catch (err) {
+    //   res.status(401);
+    //   res.json(`Invalid token ${err}`);
+    //   return;
+    // }
     const newJob = await job.create(JobData);
     res.json(newJob);
   } catch (error) {

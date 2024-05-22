@@ -6,6 +6,7 @@ import {
   getJob,
   updateJob
 } from '../controllers/jobControllers';
+import auth from '../middleware/auth';
 
 const router = Router();
 

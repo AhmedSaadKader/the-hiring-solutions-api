@@ -1,75 +1,42 @@
+import { BaseModel, BaseUser } from './Base_model';
 import { connectionSQLResult } from './helpers/sql_query';
 
-export type Company = {
-  id?: number;
+export type Company = BaseUser & {
   name: string;
   industry: string;
   description: string;
-  email: string;
-  password: string;
 };
 
-export class CompanyModel {
-  async index(): Promise<Company[]> {
-    try {
-      const sql = 'SELECT * FROM companies';
-      const result = await connectionSQLResult(sql, []);
-      return result.rows;
-    } catch (err) {
-      throw new Error(`Could not find companies. Error: ${err}`);
-    }
+export class CompanyModel extends BaseModel {
+  tableName = 'companies';
+
+  async index<Company extends BaseUser>(): Promise<Company[]> {
+    return super.index<Company>(this.tableName);
   }
 
-  async show(id: number): Promise<Company> {
-    try {
-      const sql = 'SELECT * FROM companies WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not find company ${id}. Error: ${err}`);
-    }
+  async show<Company extends BaseUser>(id: number): Promise<Company> {
+    return super.show<Company>(id, this.tableName);
   }
 
-  async create(company: Company): Promise<Company> {
-    const { name, industry, description, email, password } = company;
-    try {
-      const sql =
-        'INSERT INTO companies (name, industry, description, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-      const result = await connectionSQLResult(sql, [
-        name,
-        industry,
-        description,
-        email,
-        password
-      ]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not create company ${name}. Error: ${err}`);
-    }
+  async create<Company extends BaseUser>(company: Company): Promise<Company> {
+    return super.create<Company>(company, this.tableName);
   }
-
-  async delete(id: number): Promise<undefined> {
-    try {
-      const sql = 'DELETE FROM companies WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not delete company ${id}. Error: ${err}`);
-    }
-  }
-
-  async update(
-    id: number,
-    name: string,
-    industry: string,
-    description: string,
+  async authenticate<Copmany extends BaseUser>(
     email: string,
     password: string
-  ): Promise<Company> {
+  ) {
+    return super.authenticate<Copmany>(email, password, this.tableName);
+  }
+
+  async delete<Copmany extends BaseUser>(id: number): Promise<Copmany> {
+    return super.delete<Copmany>(id, this.tableName);
+  }
+
+  async update(id, name, industry, description, email, password) {
     try {
       const sql =
         'UPDATE companies SET name=($1), industry=($2), description=($3), email=($4), password=($5) WHERE id=($6) RETURNING *';
-      const result = await connectionSQLResult(sql, [
+      const result = await (0, sql_query_1.connectionSQLResult)(sql, [
         name,
         industry,
         description,

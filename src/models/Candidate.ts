@@ -1,75 +1,43 @@
-import { connectionSQLResult } from './helpers/sql_query';
+import { BaseModel, BaseUser } from './Base_model';
 
-export type Candidate = {
-  id?: number;
-  name: string;
-  email: string;
-  password: string;
+export type Candidate = BaseUser & {
+  recruiter_id?: number;
   resume: string;
   experience: number;
 };
 
-export class CandidateModel {
-  async index(): Promise<Candidate[]> {
-    try {
-      const sql = 'SELECT * FROM candidates';
-      const result = await connectionSQLResult(sql, []);
-      return result.rows;
-    } catch (err) {
-      throw new Error(`Could not find candidates. Error: ${err}`);
-    }
+export class CandidateModel extends BaseModel {
+  tableName = 'candidates';
+
+  async index<Candidate extends BaseUser>(): Promise<Candidate[]> {
+    return super.index<Candidate>(this.tableName);
   }
 
-  async show(id: number): Promise<Candidate> {
-    try {
-      const sql = 'SELECT * FROM candidates WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not find candidate ${id}. Error: ${err}`);
-    }
+  async show<Candidate extends BaseUser>(id: number): Promise<Candidate> {
+    return super.show<Candidate>(id, this.tableName);
   }
 
-  async create(candidate: Candidate): Promise<Candidate> {
-    const { name, email, password, resume, experience } = candidate;
-    try {
-      const sql =
-        'INSERT INTO candidates (name, email, password, resume, experience) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-      const result = await connectionSQLResult(sql, [
-        name,
-        email,
-        password,
-        resume,
-        experience
-      ]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not create candidate ${name}. Error: ${err}`);
-    }
-  }
-
-  async delete(id: number): Promise<undefined> {
-    try {
-      const sql = 'DELETE FROM candidates WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not delete candidate ${id}. Error: ${err}`);
-    }
-  }
-
-  async update(
-    id: number,
-    name: string,
-    email: string,
-    password: string,
-    resume: string,
-    experience: number
+  async create<Candidate extends BaseUser>(
+    candidate: Candidate
   ): Promise<Candidate> {
+    return super.create<Candidate>(candidate, this.tableName);
+  }
+  async authenticate<Candidate extends BaseUser>(
+    email: string,
+    password: string
+  ) {
+    return super.authenticate<Candidate>(email, password, this.tableName);
+  }
+
+  async delete<Candidate extends BaseUser>(id: number): Promise<Candidate> {
+    return super.delete<Candidate>(id, this.tableName);
+  }
+
+  async update(id, name, email, password, resume, experience) {
     try {
       const sql =
         'UPDATE candidates SET name=($1), email=($2), password=($3), resume=($4), experience=($5) WHERE id=($6) RETURNING *';
-      const result = await connectionSQLResult(sql, [
+      const result = await (0, sql_query_1.connectionSQLResult)(sql, [
         name,
         email,
         password,

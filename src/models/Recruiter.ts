@@ -1,65 +1,34 @@
-import { connectionSQLResult } from './helpers/sql_query';
+import { BaseModel, BaseUser } from './Base_model';
 
-export type Recruiter = {
-  id?: number;
-  name: string;
-  email: string;
-  password: string;
+export type Recruiter = BaseUser & {
+  password_digest?: string;
 };
 
-export class RecruiterModel {
-  async index(): Promise<Recruiter[]> {
-    try {
-      const sql = 'SELECT * FROM recruiters';
-      const result = await connectionSQLResult(sql, []);
-      return result.rows;
-    } catch (err) {
-      throw new Error(`Could not find recruiters. Error: ${err}`);
-    }
+export class RecruiterModel extends BaseModel {
+  tableName = 'recruiters';
+  async index<Recruiter extends BaseUser>(): Promise<Recruiter[]> {
+    return super.index(this.tableName);
   }
 
-  async show(id: number): Promise<Recruiter> {
-    try {
-      const sql = 'SELECT * FROM recruiters WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not find recruiter ${id}. Error: ${err}`);
-    }
+  async show<Recruiter extends BaseUser>(id: number): Promise<Recruiter> {
+    return super.show(id, this.tableName);
   }
 
-  async create(recruiter: Recruiter): Promise<Recruiter> {
-    const { name, email, password } = recruiter;
-    try {
-      const sql =
-        'INSERT INTO recruiters (name, email, password) VALUES ($1, $2, $3) RETURNING *';
-      const result = await connectionSQLResult(sql, [name, email, password]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not create recruiter ${name}. Error: ${err}`);
-    }
-  }
-
-  async delete(id: number): Promise<undefined> {
-    try {
-      const sql = 'DELETE FROM recruiters WHERE id=($1)';
-      const result = await connectionSQLResult(sql, [id]);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error(`Could not delete recruiter ${id}. Error: ${err}`);
-    }
-  }
-
-  async update(
-    id: number,
-    name: string,
-    email: string,
-    password: string
+  async create<Recruiter extends BaseUser>(
+    recruiter: Recruiter
   ): Promise<Recruiter> {
+    return super.create(recruiter, this.tableName);
+  }
+
+  async delete<Recruiter extends BaseUser>(id: number): Promise<Recruiter> {
+    return super.delete(id, this.tableName);
+  }
+
+  async update(id, name, email, password) {
     try {
       const sql =
         'UPDATE recruiters SET name=($1), email=($2), password=($3) WHERE id=($4) RETURNING *';
-      const result = await connectionSQLResult(sql, [
+      const result = await (0, sql_query_1.connectionSQLResult)(sql, [
         name,
         email,
         password,
