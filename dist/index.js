@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+const adminRoutes_1 = __importDefault(require("./routes/adminRoutes"));
 const skillRoutes_1 = __importDefault(require("./routes/skillRoutes"));
 const recruiterRoutes_1 = __importDefault(require("./routes/recruiterRoutes"));
 const jobRoutes_1 = __importDefault(require("./routes/jobRoutes"));
@@ -25,6 +26,7 @@ app.use((0, cors_1.default)());
 app.get('/', function (req, res) {
     res.send('Hello world!');
 });
+app.use(`${route}admins`, adminRoutes_1.default);
 app.use(`${route}skills`, skillRoutes_1.default);
 app.use(`${route}recruiters`, recruiterRoutes_1.default);
 app.use(`${route}companies`, companyRoutes_1.default);

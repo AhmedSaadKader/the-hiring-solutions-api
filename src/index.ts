@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import adminRouter from './routes/adminRoutes';
 import skillRouter from './routes/skillRoutes';
 import recruiterRouter from './routes/recruiterRoutes';
 import jobRouter from './routes/jobRoutes';
@@ -24,6 +25,8 @@ app.use(cors());
 app.get('/', function (req: Request, res: Response) {
   res.send('Hello world!');
 });
+
+app.use(`${route}admins`, adminRouter);
 
 app.use(`${route}skills`, skillRouter);
 

@@ -1,26 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RecruiterModel = void 0;
+exports.AdminModel = void 0;
 const Base_model_1 = require("./Base_model");
 const Roles_1 = require("./Roles");
 const passwordHandler_1 = require("./helpers/passwordHandler");
 const sql_query_1 = require("./helpers/sql_query");
-class RecruiterModel extends Base_model_1.BaseModel {
+class AdminModel extends Base_model_1.BaseModel {
     constructor() {
         super(...arguments);
-        this.tableName = 'recruiters';
+        this.tableName = 'admins';
     }
-    async indexRecruiter() {
+    async indexAdmin() {
         return super.index(this.tableName);
     }
-    async showRecruiter(id) {
+    async showAdmin(id) {
         return super.show(id, this.tableName);
     }
-    async create(recruiter) {
-        const { name, email, password } = recruiter;
-        const role = Roles_1.Roles.RECRUITER;
+    async create(admin) {
+        const { name, email, password } = admin;
+        const role = Roles_1.Roles.ADMIN;
         try {
-            const sql = 'INSERT INTO recruiters (role, name, email, password_digest) VALUES ($1, $2, $3, $4) RETURNING *';
+            const sql = 'INSERT INTO admins (role, name, email, password_digest) VALUES ($1, $2, $3, $4) RETURNING *';
             const result = await (0, sql_query_1.connectionSQLResult)(sql, [
                 role,
                 name,
@@ -30,7 +30,7 @@ class RecruiterModel extends Base_model_1.BaseModel {
             return result.rows[0];
         }
         catch (err) {
-            throw new Error(`Could not create recruiter ${name}. Error: ${err}`);
+            throw new Error(`Could not create admin ${name}. Error: ${err}`);
         }
     }
     async emailExists(email) {
@@ -42,28 +42,28 @@ class RecruiterModel extends Base_model_1.BaseModel {
         const user = result.rows[0];
         return user;
     }
-    async authenticateRecruiter(email, password) {
+    async authenticateAdmin(email, password) {
         try {
-            const recruiterAccount = await this.emailExists(email);
-            if (!recruiterAccount) {
+            const adminAccount = await this.emailExists(email);
+            if (!adminAccount) {
                 throw new Error('email unavailable');
             }
-            if ((0, passwordHandler_1.comparePassword)(password, recruiterAccount.password_digest)) {
+            if ((0, passwordHandler_1.comparePassword)(password, adminAccount.password_digest)) {
                 throw new Error('password is incorrect');
             }
-            return recruiterAccount;
+            return adminAccount;
         }
         catch (err) {
             throw new Error(`Could not find user ${email}. Error: ${err}`);
         }
     }
-    async deleteRecruiter(id) {
+    async deleteAdmin(id) {
         return super.delete(id, this.tableName);
     }
-    async update(recruiter) {
-        const { id, name, email, password } = recruiter;
+    async update(admin) {
+        const { id, name, email, password } = admin;
         try {
-            const sql = 'UPDATE recruiters SET name=($1), email=($2), password=($3) WHERE id=($4) RETURNING *';
+            const sql = 'UPDATE admins SET name=($1), email=($2), password=($3) WHERE id=($4) RETURNING *';
             const result = await (0, sql_query_1.connectionSQLResult)(sql, [
                 name,
                 email,
@@ -73,8 +73,8 @@ class RecruiterModel extends Base_model_1.BaseModel {
             return result.rows[0];
         }
         catch (err) {
-            throw new Error(`Could not update recruiter ${id}. Error: ${err}`);
+            throw new Error(`Could not update admin ${id}. Error: ${err}`);
         }
     }
 }
-exports.RecruiterModel = RecruiterModel;
+exports.AdminModel = AdminModel;

@@ -1,3 +1,9 @@
+INSERT INTO admins (name, email, password_digest)
+VALUES
+  ('John Admin', 'john@admin.com', 'password123'),
+  ('Alice Admin', 'alice@admin.com', 'qwerty456'),
+  ('Bob Admin', 'bob@admin.com', 'abc123');
+
 INSERT INTO recruiters (name, email, password_digest)
 VALUES
   ('John Doe', 'john@example.com', 'password123'),

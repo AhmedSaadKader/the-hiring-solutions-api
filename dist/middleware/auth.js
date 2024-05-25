@@ -7,6 +7,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer')) {
+        console.log(authHeader);
         res.status(401).send('Authentication invalid');
         // throw new Error('Authentication invalid');
     }

@@ -5,6 +5,4 @@ var JobStatus;
 (function (JobStatus) {
     JobStatus["OPEN"] = "open";
     JobStatus["CLOSED"] = "closed";
-    JobStatus["IN_PROGRESS"] = "in_progress";
-    JobStatus["COMPLETED"] = "completed";
 })(JobStatus || (exports.JobStatus = JobStatus = {}));
