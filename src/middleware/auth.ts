@@ -9,7 +9,7 @@ const auth = async (
 ): Promise<void> => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer')) {
-    console.log(authHeader);
+    console.log('authHeader: ', authHeader);
     res.status(401).send('Authentication invalid');
     // throw new Error('Authentication invalid');
   }
@@ -22,6 +22,7 @@ const auth = async (
     req.user = { ...tokenVerified };
     next();
   } catch (error) {
+    res.status(401);
     next(error);
   }
 };

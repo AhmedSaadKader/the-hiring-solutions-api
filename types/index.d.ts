@@ -1,9 +1,10 @@
 import { Request } from 'express';
+import { Roles } from '../src/models/Roles';
 
 type UserPayload = {
   id?: number;
   email?: string;
-  role?: string;
+  role?: Roles;
   iat?: string | number;
 };
 

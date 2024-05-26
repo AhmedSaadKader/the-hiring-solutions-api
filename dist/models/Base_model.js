@@ -41,7 +41,7 @@ class BaseModel {
     }
     generateJWT(user) {
         return jsonwebtoken_1.default.sign({ id: user.id, email: user.email, role: user.role }, process.env.TOKEN_SECRET, {
-            expiresIn: '1h'
+            expiresIn: '48h'
         });
     }
     async delete(id, tableName) {

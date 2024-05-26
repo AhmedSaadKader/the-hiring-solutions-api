@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { RequestAuth } from '../../types';
 import { Application, ApplicationModel } from '../models/Application';
+import { Roles } from '../models/Roles';
 
 const application = new ApplicationModel();
 
@@ -12,6 +13,24 @@ export const getAllApplications = async (
   try {
     const allApplications = await application.index();
     res.json(allApplications);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserApplications = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userRole: Roles = req.user!.role as Roles;
+    const userId: number = req.user!.id as number;
+    const userApplications = await application.showUserApplications(
+      userRole,
+      userId
+    );
+    res.json(userApplications);
   } catch (error) {
     next(error);
   }

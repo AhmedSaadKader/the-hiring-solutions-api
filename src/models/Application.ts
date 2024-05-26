@@ -1,4 +1,6 @@
+import { JobModel } from './Job';
 import { JobStatus } from './Job_status';
+import { Roles } from './Roles';
 import { connectionSQLResult } from './helpers/sql_query';
 
 export type Application = {
@@ -15,7 +17,21 @@ export type Application = {
 export class ApplicationModel {
   async index(): Promise<Application[]> {
     try {
-      const sql = 'SELECT * FROM applications';
+      const sql = `
+		SELECT 
+		a.*, 
+		c.name AS candidate_name, 
+		c.email AS candidate_email,
+		r.name AS recruiter_name,
+		r.email AS recruiter_email,
+		j.title AS job_title,
+		j.company_id, comp.name AS company_name
+		FROM applications a
+		JOIN jobs j ON a.job_id = j.id
+		JOIN candidates c ON a.candidate_id = c.id
+		JOIN recruiters r ON a.recruiter_id = r.id
+		JOIN companies comp ON j.company_id = comp.id
+		  `;
       const result = await connectionSQLResult(sql, []);
       return result.rows;
     } catch (err) {
@@ -25,11 +41,79 @@ export class ApplicationModel {
 
   async show(id: number): Promise<Application> {
     try {
-      const sql = 'SELECT * FROM applications WHERE id=($1)';
+      const sql = `
+			SELECT 
+			a.*, 
+			c.name AS candidate_name, 
+			c.email AS candidate_email,
+			r.name AS recruiter_name,
+			r.email AS recruiter_email,
+			j.title AS job_title,
+			j.company_id, comp.name AS company_name
+			FROM applications a
+			JOIN jobs j ON a.job_id = j.id
+			JOIN candidates c ON a.candidate_id = c.id
+			JOIN recruiters r ON a.recruiter_id = r.id
+			JOIN companies comp ON j.company_id = comp.id
+			WHERE a.id = $1
+		  `;
       const result = await connectionSQLResult(sql, [id]);
       return result.rows[0];
     } catch (err) {
       throw new Error(`Could not find application ${id}. Error: ${err}`);
+    }
+  }
+
+  async showUserApplications(
+    userRole: Roles,
+    userId: number
+  ): Promise<Application[]> {
+    try {
+      let sql, params;
+      if (userRole === Roles.COMPANY) {
+        sql = `
+			SELECT 
+			a.*, 
+			c.name AS candidate_name, 
+			c.email AS candidate_email,
+			r.name AS recruiter_name,
+			r.email AS recruiter_email,
+			j.title AS job_title,
+			j.company_id, comp.name AS company_name
+			FROM applications a
+			JOIN jobs j ON a.job_id = j.id
+			JOIN candidates c ON a.candidate_id = c.id
+			JOIN recruiters r ON a.recruiter_id = r.id
+			JOIN companies comp ON j.company_id = comp.id
+			WHERE j.company_id = $1
+			`;
+        params = [userId];
+      } else {
+        const field =
+          userRole === Roles.RECRUITER ? 'recruiter_id' : 'candidate_id';
+        sql = `
+			SELECT 
+			a.*, 
+			c.name AS candidate_name, 
+			c.email AS candidate_email,
+			r.name AS recruiter_name,
+			r.email AS recruiter_email,
+			j.title AS job_title,
+			j.company_id,
+			comp.name AS company_name
+			FROM applications a
+			JOIN jobs j ON a.job_id = j.id
+			JOIN candidates c ON a.candidate_id = c.id
+			JOIN recruiters r ON a.recruiter_id = r.id
+			JOIN companies comp ON j.company_id = comp.id
+			WHERE a.${field} = $1
+			`;
+        params = [userId];
+      }
+      const result = await connectionSQLResult(sql, params);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get user applications. Error: ${err}`);
     }
   }
 

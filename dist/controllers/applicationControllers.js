@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateApplication = exports.deleteApplication = exports.createApplication = exports.getApplication = exports.getAllApplications = void 0;
+exports.updateApplication = exports.deleteApplication = exports.createApplication = exports.getApplication = exports.getUserApplications = exports.getAllApplications = void 0;
 const Application_1 = require("../models/Application");
 const application = new Application_1.ApplicationModel();
 const getAllApplications = async (_req, res, next) => {
@@ -13,6 +13,18 @@ const getAllApplications = async (_req, res, next) => {
     }
 };
 exports.getAllApplications = getAllApplications;
+const getUserApplications = async (req, res, next) => {
+    try {
+        const userRole = req.user.role;
+        const userId = req.user.id;
+        const userApplications = await application.showUserApplications(userRole, userId);
+        res.json(userApplications);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.getUserApplications = getUserApplications;
 const getApplication = async (req, res, next) => {
     try {
         const result = await application.show(parseInt(req.params.id));

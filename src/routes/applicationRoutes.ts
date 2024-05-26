@@ -4,17 +4,31 @@ import {
   createApplication,
   getApplication,
   updateApplication,
-  deleteApplication
+  deleteApplication,
+  getUserApplications
 } from '../controllers/applicationControllers';
+import {
+  checkApplicationOwnershipOrAdmin,
+  checkRole
+} from '../middleware/checkRole';
+import auth from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', getAllApplications);
-
-router.get('/applicationId', getApplication);
+router.use(auth);
 
 router.post('/', createApplication);
 
 router.delete('/:applicationId', deleteApplication);
+
+router.get('/allApplications', checkRole(['admin']), getAllApplications);
+
+router.get(
+  '/user',
+  checkRole(['recruiter', 'candidate', 'company']),
+  getUserApplications
+);
+
+router.get('/applicationId', checkApplicationOwnershipOrAdmin, getApplication);
 
 export default router;

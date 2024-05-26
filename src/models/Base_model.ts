@@ -1,5 +1,5 @@
 import { Roles } from './Roles';
-import { hashPassword, comparePassword } from './helpers/passwordHandler';
+import { comparePassword } from './helpers/passwordHandler';
 import { connectionSQLResult } from './helpers/sql_query';
 import jwt from 'jsonwebtoken';
 
@@ -9,6 +9,7 @@ export type BaseUser = {
   name: string;
   email: string;
   password: string;
+  phone_no: number;
 };
 
 export class BaseModel {
@@ -56,7 +57,7 @@ export class BaseModel {
       { id: user.id, email: user.email, role: user.role },
       process.env.TOKEN_SECRET as string,
       {
-        expiresIn: '1h'
+        expiresIn: '48h'
       }
     );
   }

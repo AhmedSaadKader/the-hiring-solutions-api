@@ -7,19 +7,23 @@ import {
   getAdmin,
   updateAdmin
 } from '../controllers/adminControllers';
+import auth from '../middleware/auth';
+import { checkRole } from '../middleware/checkRole';
 
 const router = Router();
 
 router.post('/login', loginAdmin);
 
-router.get('/', getAllAdmins);
+router.use(auth);
 
-router.get('/:id', getAdmin);
+router.get('/', checkRole(['admin']), getAllAdmins);
 
-router.post('/', createAdmin);
+router.get('/:id', checkRole(['admin']), getAdmin);
 
-router.delete('/:id', deleteAdmin);
+router.post('/', checkRole(['admin']), createAdmin);
 
-router.patch('/:id', updateAdmin);
+router.delete('/:id', checkRole(['admin']), deleteAdmin);
+
+router.patch('/:id', checkRole(['admin']), updateAdmin);
 
 export default router;

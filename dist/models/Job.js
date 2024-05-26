@@ -5,7 +5,7 @@ const sql_query_1 = require("./helpers/sql_query");
 class JobModel {
     async index() {
         try {
-            const sql = 'SELECT * FROM jobs';
+            const sql = 'SELECT j.*, c.name AS company_name, c.email AS company_email FROM jobs AS j JOIN companies AS c ON j.company_id = c.id';
             const result = await (0, sql_query_1.connectionSQLResult)(sql, []);
             return result.rows;
         }
@@ -15,7 +15,7 @@ class JobModel {
     }
     async show(id) {
         try {
-            const sql = 'SELECT * FROM jobs WHERE id=($1)';
+            const sql = 'SELECT j.* c.name AS company_name, c.email AS company_email FROM jobs AS j JOIN companies AS c ON j.company_id = c.id WHERE id=($1)';
             const result = await (0, sql_query_1.connectionSQLResult)(sql, [id]);
             return result.rows[0];
         }

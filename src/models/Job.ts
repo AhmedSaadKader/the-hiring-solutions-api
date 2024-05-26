@@ -16,7 +16,8 @@ export type Job = {
 export class JobModel {
   async index(): Promise<Job[]> {
     try {
-      const sql = 'SELECT * FROM jobs';
+      const sql =
+        'SELECT j.*, c.name AS company_name, c.email AS company_email FROM jobs AS j JOIN companies AS c ON j.company_id = c.id';
       const result = await connectionSQLResult(sql, []);
       return result.rows;
     } catch (err) {
@@ -26,7 +27,8 @@ export class JobModel {
 
   async show(id: number): Promise<Job> {
     try {
-      const sql = 'SELECT * FROM jobs WHERE id=($1)';
+      const sql =
+        'SELECT j.* c.name AS company_name, c.email AS company_email FROM jobs AS j JOIN companies AS c ON j.company_id = c.id WHERE id=($1)';
       const result = await connectionSQLResult(sql, [id]);
       return result.rows[0];
     } catch (err) {
