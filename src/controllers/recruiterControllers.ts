@@ -60,9 +60,10 @@ export const loginRecruiter = async (
     throw new Error('Please provide all values');
   }
   try {
-    const createdRecruiter = await recruiter.authenticateRecruiter(
+    const createdRecruiter = await recruiter.authenticate(
       email,
-      password
+      password,
+      recruiter.tableName
     );
     const token = recruiter.generateJWT(createdRecruiter as BaseUser);
     res.json({

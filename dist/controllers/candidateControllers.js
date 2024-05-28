@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCandidate = exports.deleteCandidate = exports.createCandidate = exports.getCandidate = exports.getAllCandidates = void 0;
+exports.updateCandidate = exports.deleteCandidate = exports.createCandidate = exports.loginCandidate = exports.getCandidate = exports.getAllCandidates = void 0;
 const Candidate_1 = require("../models/Candidate");
 const candidateModel = new Candidate_1.CandidateModel();
 const getAllCandidates = async (_req, res, next) => {
@@ -23,6 +23,28 @@ const getCandidate = async (req, res, next) => {
     }
 };
 exports.getCandidate = getCandidate;
+const loginCandidate = async (req, res, next) => {
+    console.log(req.body);
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+        throw new Error('Please provide all values');
+    }
+    try {
+        const createdCandidate = await candidateModel.authenticate(email, password, candidateModel.tableName);
+        const token = candidateModel.generateJWT(createdCandidate);
+        res.json({
+            token,
+            email: createdCandidate.email,
+            id: createdCandidate.id?.toString(),
+            role: createdCandidate.role
+        });
+    }
+    catch (error) {
+        res.status(400);
+        next(error);
+    }
+};
+exports.loginCandidate = loginCandidate;
 const createCandidate = async (req, res, next) => {
     const candidateData = req.body;
     try {

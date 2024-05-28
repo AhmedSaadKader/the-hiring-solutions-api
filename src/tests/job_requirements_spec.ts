@@ -18,6 +18,7 @@ describe('jobRequirement Model', () => {
       name: 'requirements_company',
       industry: 'requirements_industry',
       description: 'requirements_description',
+      phone_no: '01201201202',
       email: 'requirements@email.com',
       password: 'requirements_password'
     });

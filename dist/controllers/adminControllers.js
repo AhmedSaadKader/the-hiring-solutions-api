@@ -47,7 +47,7 @@ const loginAdmin = async (req, res, next) => {
     }
     try {
         console.log('login admin');
-        const createdAdmin = await admin.authenticateAdmin(email, password);
+        const createdAdmin = await admin.authenticate(email, password, admin.tableName);
         console.log('createdadmin: ', createdAdmin);
         const token = admin.generateJWT(createdAdmin);
         res.json({

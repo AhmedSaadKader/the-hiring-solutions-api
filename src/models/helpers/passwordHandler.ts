@@ -12,6 +12,7 @@ export const hashPassword = (password: string) =>
   );
 
 export const comparePassword = (password: string, password_digest: string) => {
+  console.log(password, password_digest);
   if (bcrypt.compareSync(password + BCRYPT_PASSWORD, password_digest)) {
     return true;
   }

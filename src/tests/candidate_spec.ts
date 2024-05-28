@@ -22,6 +22,7 @@ describe('candidate Model', () => {
   it('create method should add a new candidate', async () => {
     const result = await candidate.create({
       name: 'first_test_candidate',
+      phone_no: '01201201202',
       email: 'candidate@email.com',
       password: 'candidate_password',
       resume: 'candidate_resume',
@@ -31,6 +32,7 @@ describe('candidate Model', () => {
     expect(result).toEqual({
       id: candidate_id,
       name: 'first_test_candidate',
+      phone_no: '01201201202',
       email: 'candidate@email.com',
       password: 'candidate_password',
       resume: 'candidate_resume',
@@ -43,6 +45,7 @@ describe('candidate Model', () => {
       {
         id: candidate_id,
         name: 'first_test_candidate',
+        phone_no: '01201201202',
         email: 'candidate@email.com',
         password: 'candidate_password',
         resume: 'candidate_resume',
@@ -55,6 +58,7 @@ describe('candidate Model', () => {
     expect(result).toEqual({
       id: candidate_id,
       name: 'first_test_candidate',
+      phone_no: '01201201202',
       email: 'candidate@email.com',
       password: 'candidate_password',
       resume: 'candidate_resume',
@@ -65,6 +69,7 @@ describe('candidate Model', () => {
     const updatedCandidate: Candidate = {
       id: candidate_id,
       name: 'first_test_candidate',
+      phone_no: '01201201202',
       email: 'candidate@email.com',
       password: 'candidate_password',
       resume: 'candidate_resume',
@@ -74,6 +79,7 @@ describe('candidate Model', () => {
     expect(result).toEqual({
       id: candidate_id,
       name: 'first_test_candidate',
+      phone_no: '01201201202',
       email: 'candidate@email.com',
       password: 'candidate_password',
       resume: 'candidate_resume',

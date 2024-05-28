@@ -45,7 +45,7 @@ const loginRecruiter = async (req, res, next) => {
         throw new Error('Please provide all values');
     }
     try {
-        const createdRecruiter = await recruiter.authenticateRecruiter(email, password);
+        const createdRecruiter = await recruiter.authenticate(email, password, recruiter.tableName);
         const token = recruiter.generateJWT(createdRecruiter);
         res.json({
             token,

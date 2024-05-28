@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCompany = exports.deleteCompany = exports.createCompany = exports.getCompany = exports.getAllCompanies = void 0;
+exports.updateCompany = exports.deleteCompany = exports.createCompany = exports.loginCompany = exports.getCompany = exports.getAllCompanies = void 0;
 const Company_1 = require("../models/Company");
 const company = new Company_1.CompanyModel();
 const getAllCompanies = async (_req, res, next) => {
@@ -23,6 +23,30 @@ const getCompany = async (req, res, next) => {
     }
 };
 exports.getCompany = getCompany;
+const loginCompany = async (req, res, next) => {
+    console.log(req.body);
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+        throw new Error('Please provide all values');
+    }
+    try {
+        console.log('login Company');
+        const createdCompany = await company.authenticate(email, password, company.tableName);
+        console.log('createdCompany: ', createdCompany);
+        const token = company.generateJWT(createdCompany);
+        res.json({
+            token,
+            email: createdCompany.email,
+            id: createdCompany.id,
+            role: createdCompany.role
+        });
+    }
+    catch (error) {
+        res.status(400);
+        next(error);
+    }
+};
+exports.loginCompany = loginCompany;
 const createCompany = async (req, res, next) => {
     const CompanyData = req.body;
     try {

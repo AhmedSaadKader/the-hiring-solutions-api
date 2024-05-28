@@ -1,20 +1,21 @@
-INSERT INTO admins (name, email, password_digest)
+INSERT INTO admins (name, phone_no, email, password_digest)
 VALUES
-  ('John Admin', 'john@admin.com', 'password123'),
-  ('Alice Admin', 'alice@admin.com', 'qwerty456'),
-  ('Bob Admin', 'bob@admin.com', 'abc123');
+  ('John Admin', '01201201201', 'john@admin.com', 'password123'),
+  ('Alice Admin', '01201201202', 'alice@admin.com', 'qwerty456'),
+  ('Bob Admin', '01201201203', 'bob@admin.com', 'abc123');
 
-INSERT INTO recruiters (name, email, password_digest)
+INSERT INTO recruiters (name, phone_no, email, password_digest)
 VALUES
-  ('John Doe', 'john@example.com', 'password123'),
-  ('Alice Smith', 'alice@example.com', 'qwerty456'),
-  ('Bob Johnson', 'bob@example.com', 'abc123');
+  ('admin', '01201201220', 'admin@admin.com', 'admin'),
+  ('John Doe', '01201201204', 'john@example.com', 'password123'),
+  ('Alice Smith', '01201201205', 'alice@example.com', 'qwerty456'),
+  ('Bob Johnson', '01201201206', 'bob@example.com', 'abc123');
 
-INSERT INTO companies (name, industry, description, email, password_digest)
+INSERT INTO companies (name, industry, description, phone_no, email, password_digest)
 VALUES
-  ('Company A', 'Tech', 'Tech company specializing in software development', 'companyA@example.com', 'password123'),
-  ('Company B', 'Finance', 'Finance company offering financial services', 'companyB@example.com', 'qwerty456'),
-  ('Company C', 'Healthcare', 'Healthcare company providing medical services', 'companyC@example.com', 'abc123');
+  ('Company A', 'Tech', 'Tech company specializing in software development', '01201201207', 'companyA@example.com', 'password123'),
+  ('Company B', 'Finance', 'Finance company offering financial services', '01201201208', 'companyB@example.com', 'qwerty456'),
+  ('Company C', 'Healthcare', 'Healthcare company providing medical services', '01201201209', 'companyC@example.com', 'abc123');
 
 INSERT INTO skills (name)
 VALUES
@@ -28,11 +29,11 @@ VALUES
   ('CSS'),
   ('Node.js');
 
-INSERT INTO candidates (name, email, password_digest, resume, experience)
+INSERT INTO candidates (name, phone_no, email, password_digest, resume, experience)
 VALUES
-  ('Jane Doe', 'jane@example.com', 'password123', 'link_to_resume', 3),
-  ('Michael Smith', 'michael@example.com', 'qwerty456', 'link_to_resume', 5),
-  ('Emily Johnson', 'emily@example.com', 'abc123', 'link_to_resume', 2);
+  ('Jane Doe', '01201201210', 'jane@example.com', 'password123', 'link_to_resume', 3),
+  ('Michael Smith', '01201201211', 'michael@example.com', 'qwerty456', 'link_to_resume', 5),
+  ('Emily Johnson', '01201201212', 'emily@example.com', 'abc123', 'link_to_resume', 2);
 
 INSERT INTO jobs (company_id, title, description, salary, location, status)
 VALUES

@@ -9,7 +9,6 @@ const auth = async (req, res, next) => {
     if (!authHeader || !authHeader.startsWith('Bearer')) {
         console.log('authHeader: ', authHeader);
         res.status(401).send('Authentication invalid');
-        // throw new Error('Authentication invalid');
     }
     const token = authHeader?.split(' ')[1];
     try {

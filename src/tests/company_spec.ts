@@ -24,6 +24,7 @@ describe('Company Model', () => {
       name: 'first_test_company',
       industry: 'first_test_industry',
       description: 'first_company_description',
+      phone_no: '01201201202',
       email: 'company@email.com',
       password: 'company_password'
     });
@@ -33,6 +34,7 @@ describe('Company Model', () => {
       name: 'first_test_company',
       industry: 'first_test_industry',
       description: 'first_company_description',
+      phone_no: '01201201202',
       email: 'company@email.com',
       password: 'company_password'
     });
@@ -45,6 +47,7 @@ describe('Company Model', () => {
         name: 'first_test_company',
         industry: 'first_test_industry',
         description: 'first_company_description',
+        phone_no: '01201201202',
         email: 'company@email.com',
         password: 'company_password'
       }
@@ -57,6 +60,7 @@ describe('Company Model', () => {
       name: 'first_test_company',
       industry: 'first_test_industry',
       description: 'first_company_description',
+      phone_no: '01201201202',
       email: 'company@email.com',
       password: 'company_password'
     });
@@ -67,6 +71,7 @@ describe('Company Model', () => {
       name: 'updated_test_company',
       industry: 'first_test_industry',
       description: 'first_company_description',
+      phone_no: '01201201202',
       email: 'company@email.com',
       password: 'company_password'
     };
@@ -76,6 +81,7 @@ describe('Company Model', () => {
       name: 'updated_test_company',
       industry: 'first_test_industry',
       description: 'first_company_description',
+      phone_no: '01201201202',
       email: 'company@email.com',
       password: 'company_password'
     });

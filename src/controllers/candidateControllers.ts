@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { RequestAuth } from '../../types';
 import { Candidate, CandidateModel } from '../models/Candidate';
+import { BaseUser } from '../models/Base_model';
 
 const candidateModel = new CandidateModel();
 
@@ -26,6 +27,35 @@ export const getCandidate = async (
     const result = await candidateModel.showCandidate(parseInt(req.params.id));
     res.json(result);
   } catch (error) {
+    next(error);
+  }
+};
+
+export const loginCandidate = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  console.log(req.body);
+  const { email, password, role } = req.body;
+  if (!email || !password || !role) {
+    throw new Error('Please provide all values');
+  }
+  try {
+    const createdCandidate = await candidateModel.authenticate(
+      email,
+      password,
+      candidateModel.tableName
+    );
+    const token = candidateModel.generateJWT(createdCandidate as BaseUser);
+    res.json({
+      token,
+      email: (createdCandidate as BaseUser).email,
+      id: (createdCandidate as BaseUser).id?.toString(),
+      role: (createdCandidate as BaseUser).role
+    });
+  } catch (error) {
+    res.status(400);
     next(error);
   }
 };

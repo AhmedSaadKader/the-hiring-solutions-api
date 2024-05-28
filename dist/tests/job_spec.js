@@ -14,6 +14,7 @@ describe('Job Model', () => {
             name: 'job_test_company',
             industry: 'job_test_industry',
             description: 'job_company_description',
+            phone_no: '01201201202',
             email: 'job_company@email.com',
             password: 'job_company_password'
         });

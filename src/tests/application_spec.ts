@@ -21,11 +21,13 @@ describe('Application Model', () => {
   beforeAll(async () => {
     new_recruiter = await recruiter.create({
       name: 'application_recruiter',
+      phone_no: '01201201202',
       email: 'application@email.com',
       password: 'application_password'
     });
     new_candidate = await candidate.create({
       name: 'application_candidate',
+      phone_no: '01201201202',
       email: 'application@email.com',
       password: 'application_password',
       resume: 'application_resume',
@@ -35,6 +37,7 @@ describe('Application Model', () => {
       name: 'application_company',
       industry: 'application_industry',
       description: 'application_description',
+      phone_no: '01201201202',
       email: 'application@email.com',
       password: 'application_password'
     });

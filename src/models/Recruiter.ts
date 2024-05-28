@@ -35,36 +35,6 @@ export class RecruiterModel extends BaseModel {
     }
   }
 
-  async emailExists(email: string): Promise<Recruiter | undefined> {
-    const sql = `SELECT * FROM ${this.tableName} WHERE email=($1)`;
-    const result = await connectionSQLResult(sql, [email]);
-    if (!result.rows.length) {
-      return undefined;
-    }
-    const user = result.rows[0];
-    return user;
-  }
-
-  async authenticateRecruiter(
-    email: string,
-    password: string
-  ): Promise<Recruiter | string> {
-    try {
-      const recruiterAccount = await this.emailExists(email);
-      if (!recruiterAccount) {
-        throw new Error('email unavailable');
-      }
-      if (
-        comparePassword(password, recruiterAccount.password_digest as string)
-      ) {
-        throw new Error('password is incorrect');
-      }
-      return recruiterAccount;
-    } catch (err) {
-      throw new Error(`Could not find user ${email}. Error: ${err}`);
-    }
-  }
-
   async deleteRecruiter<Recruiter extends BaseUser>(
     id: number
   ): Promise<Recruiter | null> {

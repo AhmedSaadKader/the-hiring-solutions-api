@@ -19,13 +19,14 @@ export class AdminModel extends BaseModel {
   }
 
   async create(admin: Admin): Promise<Admin> {
-    const { name, email, password } = admin;
+    const { name, phone_no, email, password } = admin;
     const role = Roles.ADMIN;
     try {
       const sql =
-        'INSERT INTO admins (role, name, email, password_digest) VALUES ($1, $2, $3, $4) RETURNING *';
+        'INSERT INTO admins (role, phone_no, name, email, password_digest) VALUES ($1, $2, $3, $4, $5) RETURNING *';
       const result = await connectionSQLResult(sql, [
         role,
+        phone_no,
         name,
         email,
         password
@@ -33,34 +34,6 @@ export class AdminModel extends BaseModel {
       return result.rows[0];
     } catch (err) {
       throw new Error(`Could not create admin ${name}. Error: ${err}`);
-    }
-  }
-
-  async emailExists(email: string): Promise<Admin | undefined> {
-    const sql = `SELECT * FROM ${this.tableName} WHERE email=($1)`;
-    const result = await connectionSQLResult(sql, [email]);
-    if (!result.rows.length) {
-      return undefined;
-    }
-    const user = result.rows[0];
-    return user;
-  }
-
-  async authenticateAdmin(
-    email: string,
-    password: string
-  ): Promise<Admin | string> {
-    try {
-      const adminAccount = await this.emailExists(email);
-      if (!adminAccount) {
-        throw new Error('email unavailable');
-      }
-      if (comparePassword(password, adminAccount.password_digest as string)) {
-        throw new Error('password is incorrect');
-      }
-      return adminAccount;
-    } catch (err) {
-      throw new Error(`Could not find user ${email}. Error: ${err}`);
     }
   }
 

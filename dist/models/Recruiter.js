@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecruiterModel = void 0;
 const Base_model_1 = require("./Base_model");
 const Roles_1 = require("./Roles");
-const passwordHandler_1 = require("./helpers/passwordHandler");
 const sql_query_1 = require("./helpers/sql_query");
 class RecruiterModel extends Base_model_1.BaseModel {
     constructor() {
@@ -31,30 +30,6 @@ class RecruiterModel extends Base_model_1.BaseModel {
         }
         catch (err) {
             throw new Error(`Could not create recruiter ${name}. Error: ${err}`);
-        }
-    }
-    async emailExists(email) {
-        const sql = `SELECT * FROM ${this.tableName} WHERE email=($1)`;
-        const result = await (0, sql_query_1.connectionSQLResult)(sql, [email]);
-        if (!result.rows.length) {
-            return undefined;
-        }
-        const user = result.rows[0];
-        return user;
-    }
-    async authenticateRecruiter(email, password) {
-        try {
-            const recruiterAccount = await this.emailExists(email);
-            if (!recruiterAccount) {
-                throw new Error('email unavailable');
-            }
-            if ((0, passwordHandler_1.comparePassword)(password, recruiterAccount.password_digest)) {
-                throw new Error('password is incorrect');
-            }
-            return recruiterAccount;
-        }
-        catch (err) {
-            throw new Error(`Could not find user ${email}. Error: ${err}`);
         }
     }
     async deleteRecruiter(id) {

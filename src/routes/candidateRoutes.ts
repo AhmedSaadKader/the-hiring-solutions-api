@@ -4,16 +4,23 @@ import {
   deleteCandidate,
   getAllCandidates,
   getCandidate,
+  loginCandidate,
   updateCandidate
 } from '../controllers/candidateControllers';
+import auth from '../middleware/auth';
+import { checkRole } from '../middleware/checkRole';
 
 const router = Router();
 
-router.get('/', getAllCandidates);
+router.post('/login', loginCandidate);
+
+router.post('/', createCandidate);
 
 router.get('/:id', getCandidate);
 
-router.post('/', createCandidate);
+router.use(auth);
+
+router.get('/', checkRole(['admin']), getAllCandidates);
 
 router.delete('/:id', deleteCandidate);
 

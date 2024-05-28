@@ -4,7 +4,8 @@ CREATE TABLE "companies" (
   "name" varchar NOT NULL,
   "industry" varchar,
   "description" varchar,
-  "email" varchar UNIQUE NOT NULL,
+  "phone_no" varchar UNIQUE,
+  "email" varchar UNIQUE,
   "password_digest" varchar,
   CONSTRAINT valid_email_format CHECK (email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 );

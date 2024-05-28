@@ -11,6 +11,7 @@ const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
 const hashPassword = (password) => bcrypt_1.default.hashSync((password + BCRYPT_PASSWORD), parseInt(SALT_ROUNDS));
 exports.hashPassword = hashPassword;
 const comparePassword = (password, password_digest) => {
+    console.log(password, password_digest);
     if (bcrypt_1.default.compareSync(password + BCRYPT_PASSWORD, password_digest)) {
         return true;
     }

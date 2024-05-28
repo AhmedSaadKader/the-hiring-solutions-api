@@ -22,6 +22,7 @@ describe('Recruiter Model', () => {
   it('create method should add a new recruiter', async () => {
     const result = await recruiter.create({
       name: 'first_test_recruiter',
+      phone_no: '01201201202',
       email: 'recruiter@email.com',
       password: 'recruiter_password'
     });
@@ -29,6 +30,7 @@ describe('Recruiter Model', () => {
     expect(result).toEqual({
       id: recruiter_id,
       name: 'first_test_recruiter',
+      phone_no: '01201201202',
       email: 'recruiter@email.com',
       password: 'recruiter_password'
     });
@@ -39,6 +41,7 @@ describe('Recruiter Model', () => {
       {
         id: recruiter_id,
         name: 'first_test_recruiter',
+        phone_no: '01201201202',
         email: 'recruiter@email.com',
         password: 'recruiter_password'
       }
@@ -49,6 +52,7 @@ describe('Recruiter Model', () => {
     expect(result).toEqual({
       id: recruiter_id,
       name: 'first_test_recruiter',
+      phone_no: '01201201202',
       email: 'recruiter@email.com',
       password: 'recruiter_password'
     });
@@ -57,6 +61,7 @@ describe('Recruiter Model', () => {
     const updatedRecruiter: Recruiter = {
       id: recruiter_id,
       name: 'updated_test_recruiter',
+      phone_no: '01201201202',
       email: 'recruiter@email.com',
       password: 'recruiter_password'
     };
@@ -64,6 +69,7 @@ describe('Recruiter Model', () => {
     expect(result).toEqual({
       id: recruiter_id,
       name: 'updated_test_recruiter',
+      phone_no: '01201201202',
       email: 'recruiter@email.com',
       password: 'recruiter_password'
     });

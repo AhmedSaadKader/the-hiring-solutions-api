@@ -62,14 +62,18 @@ export const loginAdmin = async (
   }
   try {
     console.log('login admin');
-    const createdAdmin = await admin.authenticateAdmin(email, password);
+    const createdAdmin = await admin.authenticate(
+      email,
+      password,
+      admin.tableName
+    );
     console.log('createdadmin: ', createdAdmin);
-    const token = admin.generateJWT(createdAdmin as BaseUser);
+    const token = admin.generateJWT(createdAdmin as Admin);
     res.json({
       token,
-      email: (createdAdmin as BaseUser).email,
-      id: (createdAdmin as BaseUser).id,
-      role: (createdAdmin as BaseUser).role
+      email: (createdAdmin as Admin).email,
+      id: (createdAdmin as Admin).id,
+      role: (createdAdmin as Admin).role
     });
   } catch (error) {
     res.status(400);

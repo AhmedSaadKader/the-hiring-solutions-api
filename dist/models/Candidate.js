@@ -10,18 +10,23 @@ class CandidateModel extends Base_model_1.BaseModel {
         this.tableName = 'candidates';
     }
     async indexCandidate() {
+        // const sql =
+        //   'SELECT c.*, r.name AS recruiter_name FROM candidates AS c LEFT JOIN recruiters AS r ON c.recruiter_id = r.id';
         return super.index(this.tableName);
     }
     async showCandidate(id) {
+        // const sql =
+        //   'SELECT c.*, r.name AS recruiter_name FROM candidates AS c LEFT JOIN recruiters AS r ON c.recruiter_id = r.id WHERE c.id = $1';
         return super.show(id, this.tableName);
     }
     async create(candidate) {
-        const { name, email, password, resume, experience } = candidate;
+        const { name, phone_no, email, password, resume, experience } = candidate;
         try {
-            const sql = 'INSERT INTO candidates (name, email, password_digest, resume, experience) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+            const sql = 'INSERT INTO candidates (name, phone_no, email, password_digest, resume, experience) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
             const password_digest = (0, passwordHandler_1.hashPassword)(password);
             const result = await (0, sql_query_1.connectionSQLResult)(sql, [
                 name,
+                phone_no,
                 email,
                 password_digest,
                 resume,
@@ -32,9 +37,6 @@ class CandidateModel extends Base_model_1.BaseModel {
         catch (err) {
             throw new Error(`Could not create candidate ${name}. Error: ${err}`);
         }
-    }
-    async authenticateCandidate(email, password) {
-        return super.authenticate(email, password, this.tableName);
     }
     async deleteCandidate(id) {
         return super.delete(id, this.tableName);

@@ -12,6 +12,7 @@ describe('candidateSkill Model', () => {
     beforeAll(async () => {
         new_candidate = await candidate.create({
             name: 'skills_candidate',
+            phone_no: '01201201202',
             email: 'skills@email.com',
             password: 'skills_password',
             resume: 'skill_resume',

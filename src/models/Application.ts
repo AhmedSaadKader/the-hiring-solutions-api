@@ -1,4 +1,3 @@
-import { JobModel } from './Job';
 import { JobStatus } from './Job_status';
 import { Roles } from './Roles';
 import { connectionSQLResult } from './helpers/sql_query';

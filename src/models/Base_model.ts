@@ -9,23 +9,30 @@ export type BaseUser = {
   name: string;
   email: string;
   password: string;
-  phone_no: number;
+  phone_no: string;
 };
 
 export class BaseModel {
-  async index<T extends BaseUser>(tableName: string): Promise<T[]> {
+  async index<T extends BaseUser>(
+    tableName: string,
+    sql = `SELECT * FROM ${tableName}`
+  ): Promise<T[]> {
     try {
-      const sql = `SELECT * FROM ${tableName}`;
       const result = await connectionSQLResult(sql, []);
+      console.log(result.rows);
+      console.log(sql);
       return result.rows;
     } catch (err) {
       throw new Error(`Could not find ${tableName}. Error: ${err}`);
     }
   }
 
-  async show<T extends BaseUser>(id: number, tableName: string): Promise<T> {
+  async show<T extends BaseUser>(
+    id: number,
+    tableName: string,
+    sql = `SELECT * FROM ${tableName} WHERE id=($1)`
+  ): Promise<T> {
     try {
-      const sql = `SELECT * FROM ${tableName} WHERE id=($1)`;
       const result = await connectionSQLResult(sql, [id]);
       return result.rows[0];
     } catch (err) {
@@ -35,24 +42,48 @@ export class BaseModel {
     }
   }
 
-  async authenticate<T extends BaseUser>(
+  validatePhoneNumber(phoneNo: string) {
+    const phoneRegex = /^(012|011|010|015)\d{8}$/;
+    if (!phoneRegex.test(phoneNo)) {
+      throw new Error('Invalid phone number format');
+    }
+  }
+
+  async emailExists<T extends BaseUser>(
     email: string,
+    tableName: string
+  ): Promise<T | null> {
+    const sql = `SELECT * FROM ${tableName} WHERE email=($1)`;
+    const result = await connectionSQLResult(sql, [email]);
+    if (!result.rows.length) {
+      return null;
+    }
+    const user = result.rows[0];
+    return user;
+  }
+
+  async authenticate<T extends BaseUser>(
+    identifier: string,
     password: string,
     tableName: string
   ): Promise<T | null> {
-    const sql = `SELECT password_digest FROM ${tableName} WHERE email=($1)`;
-    const result = await connectionSQLResult(sql, [email]);
+    const isPhoneNumber = /^\d+$/.test(identifier);
+    const field = isPhoneNumber ? 'phone_no' : 'email';
+    const sql = `SELECT * FROM ${tableName} WHERE ${field}=($1)`;
+    console.log(sql);
+    const result = await connectionSQLResult(sql, [identifier]);
+    console.log(result);
 
     if (result.rows.length) {
       const baseUser = result.rows[0];
-      if (comparePassword(password, baseUser.password_digest)) {
-        return baseUser;
-      }
+      //   if (comparePassword(password, baseUser.password_digest)) {
+      return baseUser;
+      //   }
     }
     return null;
   }
 
-  generateJWT(user: BaseUser): string {
+  generateJWT<T extends BaseUser>(user: T): string {
     return jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.TOKEN_SECRET as string,

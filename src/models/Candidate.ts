@@ -13,22 +13,27 @@ export class CandidateModel extends BaseModel {
   tableName = 'candidates';
 
   async indexCandidate(): Promise<Candidate[]> {
+    // const sql =
+    //   'SELECT c.*, r.name AS recruiter_name FROM candidates AS c LEFT JOIN recruiters AS r ON c.recruiter_id = r.id';
     return super.index<Candidate>(this.tableName);
   }
 
   async showCandidate(id: number): Promise<Candidate> {
+    // const sql =
+    //   'SELECT c.*, r.name AS recruiter_name FROM candidates AS c LEFT JOIN recruiters AS r ON c.recruiter_id = r.id WHERE c.id = $1';
     return super.show<Candidate>(id, this.tableName);
   }
 
   async create(candidate: Candidate): Promise<Candidate> {
-    const { name, email, password, resume, experience } = candidate;
+    const { name, phone_no, email, password, resume, experience } = candidate;
     try {
       const sql =
-        'INSERT INTO candidates (name, email, password_digest, resume, experience) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+        'INSERT INTO candidates (name, phone_no, email, password_digest, resume, experience) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
       const password_digest = hashPassword(password);
 
       const result = await connectionSQLResult(sql, [
         name,
+        phone_no,
         email,
         password_digest,
         resume,
@@ -38,13 +43,6 @@ export class CandidateModel extends BaseModel {
     } catch (err) {
       throw new Error(`Could not create candidate ${name}. Error: ${err}`);
     }
-  }
-
-  async authenticateCandidate(
-    email: string,
-    password: string
-  ): Promise<Candidate | null> {
-    return super.authenticate<Candidate>(email, password, this.tableName);
   }
 
   async deleteCandidate(id: number): Promise<Candidate | null> {
