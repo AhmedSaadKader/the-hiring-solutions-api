@@ -50,7 +50,7 @@ const loginRecruiter = async (req, res, next) => {
         res.json({
             token,
             email: createdRecruiter.email,
-            id: createdRecruiter.id,
+            id: createdRecruiter.id?.toString(),
             role: createdRecruiter.role
         });
     }

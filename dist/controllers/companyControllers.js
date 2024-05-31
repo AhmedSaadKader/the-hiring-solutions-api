@@ -37,7 +37,7 @@ const loginCompany = async (req, res, next) => {
         res.json({
             token,
             email: createdCompany.email,
-            id: createdCompany.id,
+            id: createdCompany.id?.toString(),
             role: createdCompany.role
         });
     }

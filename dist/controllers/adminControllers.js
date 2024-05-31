@@ -48,12 +48,12 @@ const loginAdmin = async (req, res, next) => {
     try {
         console.log('login admin');
         const createdAdmin = await admin.authenticate(email, password, admin.tableName);
-        console.log('createdadmin: ', createdAdmin);
+        console.log('createdadmin: ', createdAdmin.name);
         const token = admin.generateJWT(createdAdmin);
         res.json({
             token,
             email: createdAdmin.email,
-            id: createdAdmin.id,
+            id: createdAdmin.id?.toString(),
             role: createdAdmin.role
         });
     }

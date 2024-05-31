@@ -69,7 +69,7 @@ export const loginRecruiter = async (
     res.json({
       token,
       email: (createdRecruiter as BaseUser).email,
-      id: (createdRecruiter as BaseUser).id,
+      id: (createdRecruiter as BaseUser).id?.toString(),
       role: (createdRecruiter as BaseUser).role
     });
   } catch (error) {

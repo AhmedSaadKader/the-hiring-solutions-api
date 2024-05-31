@@ -53,7 +53,7 @@ export const loginCompany = async (
     res.json({
       token,
       email: (createdCompany as BaseUser).email,
-      id: (createdCompany as BaseUser).id,
+      id: (createdCompany as BaseUser).id?.toString(),
       role: (createdCompany as BaseUser).role
     });
   } catch (error) {

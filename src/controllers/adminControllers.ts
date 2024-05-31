@@ -67,12 +67,12 @@ export const loginAdmin = async (
       password,
       admin.tableName
     );
-    console.log('createdadmin: ', createdAdmin);
+    console.log('createdadmin: ', createdAdmin!.name);
     const token = admin.generateJWT(createdAdmin as Admin);
     res.json({
       token,
       email: (createdAdmin as Admin).email,
-      id: (createdAdmin as Admin).id,
+      id: (createdAdmin as Admin).id?.toString(),
       role: (createdAdmin as Admin).role
     });
   } catch (error) {
